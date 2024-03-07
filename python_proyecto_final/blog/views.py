@@ -30,17 +30,13 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         form.save()
-        # Lógica para crear el perfil aquí, si es necesario
+        # Lógica para crear el perfil
         return redirect(self.success_url)
     
 @login_required
 def send_message(request, recipient_id):
     recipient = get_object_or_404(User, pk=recipient_id)
     if request.method == 'POST':
-        # Procesar el formulario de mensaje aquí
-        # Por ejemplo:
-        # message = Message(sender=request.user, recipient=recipient, content=request.POST['content'])
-        # message.save()
         return HttpResponseRedirect(reverse('inbox'))
     return render(request, 'blog/send_message.html', {'recipient': recipient})
 

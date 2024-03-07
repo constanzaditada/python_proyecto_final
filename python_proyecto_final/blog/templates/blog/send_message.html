@@ -9,7 +9,6 @@
     <h1>Enviar Mensaje</h1>
     <form method="POST">
         {% csrf_token %}
-        <!-- Aquí van los campos del formulario para enviar el mensaje -->
         <label for="content">Mensaje:</label><br>
         <textarea name="content" rows="4" cols="50"></textarea><br><br>
         <input type="submit" value="Enviar">
