@@ -12,5 +12,9 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+        <a href="{% url 'password_change' %}">Cambiar contraseña</a>
+    {% endif %}
 </body>
 </html>

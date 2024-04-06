@@ -61,3 +61,57 @@ def inbox(request):
 def message_detail(request, message_id):
     message = Message.objects.get(pk=message_id)
     return render(request, 'blog/message_detail.html', {'message': message})
+
+def inbox(request):
+    messages = Message.objects.filter(recipient=request.user)
+    return render(request, 'tu_app/inbox.html', {'messages': messages})
+
+@login_required
+def profile(request):
+    user = request.user
+    return render(request, 'profile.html', {'user': user})
+
+def libro_list(request):
+    libros = Libro.objects.all()
+    return render(request, 'libro/list.html', {'libros': libros})
+
+def libro_detalle(request, pk):
+    libro = get_object_or_404(Libro, pk=pk)
+    return render(request, 'libro/detalle.html', {'libro': libro})
+
+def libro_nuevo(request):
+    if request.method == 'POST':
+        form = LibroForm(request.POST)
+        if form.is_valid():
+            libro = form.save()
+            return redirect('libro_detalle', pk=libro.pk)
+    else:
+        form = LibroForm()
+    return render(request, 'libro/nuevo.html', {'form': form})
+
+def libro_editar(request, pk):
+    libro = get_object_or_404(Libro, pk=pk)
+    if request.method == 'POST':
+        form = LibroForm(request.POST, instance=libro)
+        if form.is_valid():
+            libro = form.save()
+            return redirect('libro_detalle', pk=libro.pk)
+    else:
+        form = LibroForm(instance=libro)
+    return render(request, 'libro/editar.html', {'form': form, 'libro': libro})
+
+def libro_eliminar(request, pk):
+    libro = get_object_or_404(Libro, pk=pk)
+    if request.method == 'POST':
+        libro.delete()
+        return redirect('libro_list')
+    return render(request, 'libro/confirmar_eliminar.html', {'libro': libro})
+
+def libro_list(request):
+    libros = Libro.objects.all()
+
+    # Obtener el término de búsqueda si está presente en la solicitud GET
+    query = request.GET.get('q')
+    if query:
+        libros = libros.filter(titulo__icontains=query)
+    return render(request, 'blog/libro_list.html', {'libros': libros})

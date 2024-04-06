@@ -23,3 +23,12 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
+class Libro(models.Model):
+    titulo = models.CharField(max_length=255)
+    autor = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    fecha_publicacion = models.DateField()
+
+    def __str__(self):
+        return self.titulo
